@@ -1,0 +1,35 @@
+{
+  "name": "acme-user-mentors",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test:dev": "DATABASE_URL=postgres://localhost/acme_user_mentors ./node_modules/mocha/bin/mocha",
+    "start:dev": "DATABASE_URL=postgres://localhost/acme_user_mentors nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gabriela229/acme-user-mentors.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gabriela229/acme-user-mentors/issues"
+  },
+  "homepage": "https://github.com/gabriela229/acme-user-mentors#readme",
+  "dependencies": {
+    "body-parser": "^1.17.2",
+    "bootstrap": "^3.3.7",
+    "express": "^4.15.4",
+    "faker": "^4.1.0",
+    "method-override": "^2.3.9",
+    "nunjucks": "^3.0.1",
+    "path": "^0.12.7",
+    "pg": "^7.1.0",
+    "sequelize": "^4.4.3"
+  },
+  "devDependencies": {
+    "chai": "^4.1.1",
+    "mocha": "^3.5.0"
+  }
+}

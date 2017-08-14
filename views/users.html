@@ -1,0 +1,53 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    <form action="/users" method='POST' class='well'>
+    <div class='form-group'>
+      <input id='userName' name='name' class='form-control' type="text" placeholder="user name">
+    </div>
+    <button class='btn btn-primary btn-xs'>Add User</button>
+    </form>
+
+
+    <div class='row'>
+    {% for user in users %}
+      <div class='col-sm-3'>
+        <div class='panel panel-default'>
+          <div class='panel-heading'>{{ user.name }}
+            <form action="/users/{{user.id}}?_method=DELETE" method="POST">
+              <button class='btn btn-danger btn-xs'>Delete</button>
+            </form>
+          </div>
+          <div class='panel-body'>
+            <form action="/users/{{user.id}}/awards" method='POST'>
+              <button class='btn btn-primary btn-xs'>Create an Award</button>
+            </form>
+            <ul>
+              {% for award in user.awards %}
+              {% if award.userId === user.id %}
+              <li>{{award.name}}</li>
+              <form action="/users/{{user.id}}/awards/{{award.id}}?_method=DELETE" method='POST'>
+              <button class='btn btn-warning btn-xs'>Delete award</button>
+            </form>
+              {% endif %}
+              {% endfor %}
+            </ul>
+
+              <form action="/users/{{user.id}}?_method=PUT" method'POST' class='well'>
+              <div class='form-group'>
+                <select name="mentorId" id="mentorId">
+                  <option value="{{mentor.id}}">{{mentor.name}}</option>
+                </select>
+              </div>
+              <button class='btn btn-primary btn-xs'>Set as mentor</button>
+             </form>
+
+
+          </div>
+
+        </div>
+      </div>
+    {% endfor %}
+    </div>
+
+{% endblock %}

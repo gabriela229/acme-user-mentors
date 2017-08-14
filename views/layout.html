@@ -1,0 +1,27 @@
+<html>
+  <head>
+    <link rel="stylesheet" href="vendors/bootstrap/dist/css/bootstrap.css">
+  </head>
+  <body>
+    <div class='container'>
+      <h1>Welcome to Acme User Mentors</h1>
+      <nav>
+        <ul class='nav nav-tabs'>
+           <li role='presentation'
+           class='active'> <a href="/">Home</a></li>
+          <li role='presentation' {% if nav === 'Users' %} class='active' {% endif %}><a href="/users">Users</a></li>
+        </ul>
+      </nav>
+
+      <div>
+        {% block content %}
+        {% endblock %}
+      </div>
+
+    </div>
+  </body>
+</html>
+
+
+ <!--{% if nav === 'Home' %}-->
+              <!--{% endif %}-->
