@@ -38,7 +38,7 @@ User.updateUserFromRequestBody = function(id, body){
     include: [{model: User, as: 'mentor'}, {model: Award, as: 'awards'}]
   })
   .then(function(user){
-    user.mentorId = id;
+    user.mentorId = body.mentorId;
     return user.save();
   });
 };

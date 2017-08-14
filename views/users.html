@@ -34,11 +34,9 @@
             </ul>
 
              {% if user.mentorId %}
-             {% for usr in users %}
-             {% if usr.id === user.mentorId %}
-             <div class='label label-default'>Mentored by {{usr.name}}</div>
-             {% endif %}
-             {% endfor %}
+
+             <div class='label label-default'>Mentored by {{user.mentor.name}}</div>
+
              {% endif %}
               <form action="/users/{{user.id}}?_method=PUT" method='POST' class='well'>
               <div class='form-group'>
