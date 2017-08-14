@@ -33,16 +33,25 @@
               {% endfor %}
             </ul>
 
-              <form action="/users/{{user.id}}?_method=PUT" method'POST' class='well'>
+             {% if user.mentorId %}
+             {% for usr in users %}
+             {% if usr.id === user.mentorId %}
+             <div class='label label-default'>Mentored by {{usr.name}}</div>
+             {% endif %}
+             {% endfor %}
+             {% endif %}
+              <form action="/users/{{user.id}}?_method=PUT" method='POST' class='well'>
               <div class='form-group'>
-                <select name="mentorId" id="mentorId">
-                  <option value="{{mentor.id}}">{{mentor.name}}</option>
+                <select name="mentorId">
+                  {% for user in users %}
+                  {% if user.mentorStatus === true %}
+                  <option value="{{user.id}}">{{user.name}}</option>
+                  {% endif %}
+                  {% endfor %}
                 </select>
               </div>
               <button class='btn btn-primary btn-xs'>Set as mentor</button>
              </form>
-
-
           </div>
 
         </div>

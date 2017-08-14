@@ -17,6 +17,7 @@ User.findUsersViewModel = function(){
      include: [{model: User, as: 'mentor'}, {model: Award, as: 'awards'}]
    })
    .then((users) => {
+     console.log(users)
      return {users};
    });
 };
@@ -30,29 +31,35 @@ User.destroyById = function(id){
 };
 
 User.updateUserFromRequestBody = function(id, body){
-  User.findOne({
+  return User.findOne({
     where: {
       id: id
-    }
+    },
+    include: [{model: User, as: 'mentor'}, {model: Award, as: 'awards'}]
   })
   .then(function(user){
-    for (var key in body){
-      user[key] = body[key];
-    }
+    user.mentorId = id;
     return user.save();
   });
 };
 
 User.generateAward = function(userId){
-  return Promise.all([
-    User.findOne({
-      where: {
-        id: userId
-      }
-    }),
-    Award.create({name: '', userId: userId})
-  ])
-  // .then(function())
+  return Award.create({name: '', userId: userId})
+    .then(function(){
+      return User.findOne({
+        where: {
+          id: userId
+        },
+        include: [{model: Award, as: 'awards'}]
+        })
+        .then(function(user){
+          if (user.awards.length >= 2){
+            user.mentorStatus = true;
+          }
+          return user.save();
+    });
+
+  });
 };
 
 User.removeAward = function(userId, awardId){
@@ -60,27 +67,28 @@ User.removeAward = function(userId, awardId){
     where: {
       id: awardId
     }
-    // include: [{model: Award, as: 'awards'}]
   })
   .then(function(award){
     return award.destroy();
   })
-  // .then(function(user){
-  //   user.awards = user.awards.filter(function(val){
-  //     console.log(val.id, awardId);
-  //     return val.id.toString() !== awardId;
-  //     });
-  //      console.log(user.awards);
-  //      console.log(awardId)
-  //   return user.save({awards: user.awards});
-    // console.log(user.awards)
-
-    // })
+  .then(function(){
+    return User.findOne({
+        where: {
+          id: userId
+        },
+        include: [{model: Award, as: 'awards'}]
+    })
+      .then(function(user){
+        if (user.awards.length < 2){
+          user.mentorStatus = false;
+        }
+        return user.save();
+      });
+    });
 };
 
 User.belongsTo(User, {as: 'mentor'});
 Award.belongsTo(User);
 User.hasMany(Award, {as: 'awards'});
-// User.belongsToMany(Award, {as: 'awards'});
 
 module.exports = User;

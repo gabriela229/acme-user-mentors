@@ -12,10 +12,6 @@ const redirect = (res) => {
 router.get('/', (req, res, next) => {
   User.findUsersViewModel()
     .then(( viewModel ) => {
-      // console.log(viewModel.users);
-      // viewModel.users.forEach(function(val){
-      //   console.log(val.awards);
-      // });
       res.render('users', viewModel);
     })
     .catch(next);
