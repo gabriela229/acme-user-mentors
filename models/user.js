@@ -17,7 +17,7 @@ User.findUsersViewModel = function(){
      include: [{model: User, as: 'mentor'}, {model: Award, as: 'awards'}]
    })
    .then((users) => {
-     console.log(users)
+    //  console.log(users)
      return {users};
    });
 };
@@ -38,7 +38,11 @@ User.updateUserFromRequestBody = function(id, body){
     include: [{model: User, as: 'mentor'}, {model: Award, as: 'awards'}]
   })
   .then(function(user){
-    user.mentorId = body.mentorId;
+    if (user.mentorId){
+      user.setMentor(null);
+    } else {
+      user.setMentor(body.mentorId);
+    }
     return user.save();
   });
 };
@@ -81,6 +85,13 @@ User.removeAward = function(userId, awardId){
       .then(function(user){
         if (user.awards.length < 2){
           user.mentorStatus = false;
+          User.update({
+            mentorId: null
+          }, {
+            where: {
+              mentorId: user.id
+            }
+          });
         }
         return user.save();
       });
