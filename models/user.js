@@ -17,7 +17,6 @@ User.findUsersViewModel = function(){
      include: [{model: User, as: 'mentor'}, {model: Award, as: 'awards'}]
    })
    .then((users) => {
-    //  console.log(users)
      return {users};
    });
 };
