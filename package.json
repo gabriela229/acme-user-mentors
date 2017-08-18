@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "node index.js",
     "test:dev": "DATABASE_URL=postgres://localhost/acme_user_mentors ./node_modules/mocha/bin/mocha",
     "start:dev": "DATABASE_URL=postgres://localhost/acme_user_mentors nodemon index.js"
   },
