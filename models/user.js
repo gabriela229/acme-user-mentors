@@ -17,8 +17,24 @@ User.findUsersViewModel = function(){
      include: [{model: User, as: 'mentor'}, {model: Award, as: 'awards'}]
    })
    .then((users) => {
-     return {users};
+     var findAvailableMentors = User.findAvailableMentors;
+     return {users, findAvailableMentors};
    });
+};
+
+User.findAvailableMentors = function(usrId){
+  return User.findAll({
+    where: {
+      mentorStatus: true,
+      id: {
+        $ne: usrId
+      }
+    }
+  })
+  .then((users) => {
+    console.log(Array.isArray(users), users);
+    return users;
+  });
 };
 
 User.destroyById = function(id){

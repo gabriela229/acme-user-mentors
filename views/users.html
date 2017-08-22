@@ -10,57 +10,15 @@
 
 
     <div class='row'>
-    {% for user in users %}
+      {% for user in users %}
       <div class='col-sm-3'>
-        <div class='panel panel-default'>
-          <div class='panel-heading'>{{ user.name }}
-            <form action="/users/{{user.id}}?_method=DELETE" method="POST">
-              <button class='btn btn-danger btn-xs'>Delete</button>
-            </form>
-          </div>
-          <div class='panel-body'>
-            <form action="/users/{{user.id}}/awards" method='POST'>
-              <button class='btn btn-primary btn-xs'>Create an Award</button>
-            </form>
-            <ul>
-              {% for award in user.awards %}
-              {% if award.userId === user.id %}
-              <li>{{award.name}}</li>
-              <form action="/users/{{user.id}}/awards/{{award.id}}?_method=DELETE" method='POST'>
-              <button class='btn btn-warning btn-xs'>Delete award</button>
-            </form>
-              {% endif %}
-              {% endfor %}
-            </ul>
-
-            {% if user.mentorId %}
-
-            <div class='label label-default'>Mentored by {{user.mentor.name}}</div>
-            <br></br>
-              <form action="/users/{{user.id}}?_method=PUT" method='POST'>
-                <button class='btn btn-warning btn-xs'>Remove Mentor</button>
-              </form>
-             {% else %}
-              <form action="/users/{{user.id}}?_method=PUT" method='POST' class='well'>
-              <div class='form-group'>
-                <select name="mentorId" class='form-control'>
-                  {% for usr in users %}
-                  {% if usr.mentorStatus === true %}
-                  {% if user.id !== usr.id %}
-                  <option value="{{usr.id}}">{{usr.name}}</option>
-                  {% endif %}
-                  {% endif %}
-                  {% endfor %}
-                </select>
-              </div>
-              <button class='btn btn-primary btn-xs'>Set as mentor</button>
-             </form>
-            {% endif %}
-          </div>
+          <div class='panel panel-default'>
+        {% include "awards.html" %}
 
         </div>
       </div>
-    {% endfor %}
+      {% endfor %}
+
     </div>
 
 {% endblock %}

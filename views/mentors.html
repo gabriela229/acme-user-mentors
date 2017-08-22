@@ -1,0 +1,26 @@
+{% if user.mentorId %}
+
+<div class='label label-default'>Mentored by {{user.mentor.name}}</div>
+<br></br>
+<form action="/users/{{user.id}}?_method=PUT" method='POST'>
+    <button class='btn btn-warning btn-xs'>Remove Mentor</button>
+</form>
+{% endif %}
+
+{% if findAvailableMentors(user.id) %}
+
+<form action="/users/{{user.id}}?_method=PUT" method='POST' class='well'>
+  <div class='form-group'>
+    <p>{{findAvailableMentors(user.id)}}</p>
+    <select name="mentorId" class='form-control'>
+      {% for usr in users %}
+        {% if usr.mentorStatus === true and user.id !== usr.id %}
+      <option value="{{usr.id}}">{{usr.name}}</option>
+        {% endif %}
+      {% endfor %}
+    </select>
+  </div>
+
+  <button class='btn btn-primary btn-xs'>Set as mentor</button>
+</form>
+{% endif %}
