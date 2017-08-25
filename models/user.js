@@ -13,27 +13,33 @@ var User = db.define('user', {
 });
 
 User.findUsersViewModel = function(){
-   return User.findAll({
-     include: [{model: User, as: 'mentor'}, {model: Award, as: 'awards'}]
-   })
-   .then((users) => {
-     var findAvailableMentors = User.findAvailableMentors;
-     return {users, findAvailableMentors};
-   });
+   return Promise.all([
+      User.findAll({
+      include: [{model: User, as: 'mentor'}, {model: Award, as: 'awards'}]
+      }),
+      User.findAvailableMentors()
+      ])
+     .then(([users, findAvailableMentors]) => {
+       return {users, findAvailableMentors};
+    });
 };
 
-User.findAvailableMentors = function(usrId){
+User.findAvailableMentors = function(){
   return User.findAll({
     where: {
-      mentorStatus: true,
-      id: {
-        $ne: usrId
-      }
+      mentorStatus: true
     }
   })
-  .then((users) => {
-    console.log(Array.isArray(users), users);
-    return users;
+  .then((mentors) => {
+    return User.findAll()
+      .then( users => {
+        return users.reduce(function(mentor, user){
+          mentor[user.id] = mentors.filter(function(usr){
+            return usr.id !== user.id;
+          });
+          return mentor;
+        }, {});
+      });
   });
 };
 

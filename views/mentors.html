@@ -5,13 +5,10 @@
 <form action="/users/{{user.id}}?_method=PUT" method='POST'>
     <button class='btn btn-warning btn-xs'>Remove Mentor</button>
 </form>
-{% endif %}
-
-{% if findAvailableMentors(user.id) %}
+{% elif findAvailableMentors[user.id].length > 0 %}
 
 <form action="/users/{{user.id}}?_method=PUT" method='POST' class='well'>
   <div class='form-group'>
-    <p>{{findAvailableMentors(user.id)}}</p>
     <select name="mentorId" class='form-control'>
       {% for usr in users %}
         {% if usr.mentorStatus === true and user.id !== usr.id %}
